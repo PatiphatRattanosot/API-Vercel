@@ -1,9 +1,10 @@
 require("dotenv").config({ path: "../.env" });
+// console.log(process.env.DATABASE, process.env.dialect);
 module.exports = {
   HOST: process.env.HOST,
   USER: process.env.USER,
   PASSWORD: process.env.PASSWORD,
-  DB: process.env.DB,
+  DATABASE: process.env.DATABASE,
   dialect: process.env.dialect,
   pool: {
     max: 5,
