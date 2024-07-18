@@ -1,34 +1,37 @@
-const User = require("../models/user.model");
-const Role = require("../models/role.model");
-const { where } = require("sequelize");
+const User = require("../modlels/user.model");
+const Role = require("../modlels/role.model");
+const { Op } = require("sequelize");
 
-cheackDuplicateUsernameOrEmail = async (res, req, next) => {
+checkDuplicateUsernameOrEmail = async (req, 
+    res, next) => {
+  console.log(req.body);
+  const { username, email } = req.body;
   //cheack username
-  await User.findOne({ where: { username: req.body.username } }).then(
-    (user) => {
+  await User.findOne({
+    where: { username: username },
+  }).then((user) => {
+    if (user) {
+      res.status(400).send({
+        message: "Failed! Username is already in use!",
+      });
+      return;
+    }
+    //cheack email
+    User.findOne({
+      where: { email: email },
+    }).then((user) => {
       if (user) {
         res.status(400).send({
-          message: "Failed! Username is already in use!",
+          message: "Failed! Email is already in use!",
         });
         return;
       }
-      //cheack email
-      User.findOne({
-        where: { email: req.body.email },
-      }).then((user) => {
-        if (user) {
-          res.status(400).send({
-            message: "Failed! Email is already in use!",
-          });
-          return;
-        }
-        next();
-      });
-    }
-  );
+      next();
+    });
+  });
 };
 //Cheack roles are valid
-cheackRolesExisted = async (req, res, next) => {
+checkRolesExisted = async (req, res, next) => {
   if (req.body.roles) {
     // เอา req.body.roles ไปเปรียบเทียบกับ rolesใน DB
     Role.findAll({
@@ -52,8 +55,8 @@ cheackRolesExisted = async (req, res, next) => {
 };
 
 const verifySignUp = {
-  cheackRolesExisted,
-  cheackDuplicateUsernameOrEmail,
+  checkRolesExisted,
+  checkDuplicateUsernameOrEmail,
 };
 
 module.exports = verifySignUp;
