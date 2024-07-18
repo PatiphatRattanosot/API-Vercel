@@ -52,7 +52,6 @@ exports.getAll = async (req, res) => {
 //Get by ID
 exports.getById = async (req, res) => {
   const id = req.params.id;
-  console.log(req.params.id);
   await Restaurent.findByPk(id)
     .then((data) => {
       if (!data) {
