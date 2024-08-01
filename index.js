@@ -5,7 +5,11 @@ const PORT = process.env.PORT || 3000;
 const restaurentRouter = require("./routers/restaurent.router");
 const singupRouter = require("./routers/auth.router");
 const db = require("./modlels/");
+const cors = require("cors");
 
+const corsOption = {
+  origin: "http://localhost:5173/",
+};
 //Dev mode
 // db.sequelize.sync({ force: true }).then(() => {
 //   console.log("Drop and sync DB");
@@ -30,6 +34,7 @@ const initRole = () => {
 //use middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors(corsOption));
 
 //use router
 //POST http://localhost:3000/api/v1/restaurant
