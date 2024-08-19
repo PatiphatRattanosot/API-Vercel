@@ -14,7 +14,7 @@ router.get("/", restaurentController.getAll);
 //Get By ID
 router.get("/:id", [authJwt.vertifyToken], restaurentController.getById);
 //Update By ID
-router.put(
+router.put( 
   "/edit/:id",
   [authJwt.vertifyToken, authJwt.IsModOrAdmin],
   restaurentController.update
